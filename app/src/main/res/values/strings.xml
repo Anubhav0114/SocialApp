@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Social App</string>
+
+
+    <string-array name="payment_methods">
+        <item>By Cash</item>
+        <item>G Pay</item>
+        <item>Paytm</item>
+        <item>Phone Pay</item>
+        <item>Credit/Debit Card</item>
+    </string-array>
+</resources>
