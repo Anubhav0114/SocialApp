@@ -6,37 +6,19 @@
     android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".createPostActivity">
-   <LinearLayout
-       android:id="@+id/img"
-       android:orientation="horizontal"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginHorizontal="12dp"
-       android:padding="10dp"
-       android:layout_marginTop="10dp"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintStart_toStartOf="parent">
 
 
        <ImageView
-           android:layout_width="39dp"
-           android:layout_height="39dp"
+           android:id="@+id/img"
+           android:layout_width="330dp"
+           android:layout_height="300dp"
            android:layout_marginTop="10dp"
-           android:src="@drawable/ic_baseline_currency_rupee_24" />
-
-       <EditText
-           android:id="@+id/main_exp"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:text="1050"
-           android:textColor="@color/black"
-           android:textSize="28sp"
-           android:textStyle="bold"/>
-
-
-   </LinearLayout>
-
-
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           android:background="@drawable/post_rect"
+           android:layout_margin="20dp"
+           android:src="@drawable/ic_baseline_add_a_photo_24"
+           app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/img_delete"
@@ -77,43 +59,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img" />
     
-   <EditText
-       android:id="@+id/Location"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/post_text"
-       android:padding="10dp"
-       android:hint="Location"
-       app:layout_constraintStart_toStartOf="parent"
-       android:background="@drawable/post_rect"
-       android:layout_marginVertical="12dp"
-       android:textColor="@color/black"
-       android:layout_marginHorizontal="12dp"
-       app:layout_constraintEnd_toEndOf="parent"/>
-    <EditText
-        android:id="@+id/Pay_method"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/Location"
-        android:background="@drawable/post_rect"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginVertical="12dp"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:hint="Payment Mode"
-        app:layout_constraintEnd_toEndOf="parent"/>
+
     <Button
         android:id="@+id/post_button"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@drawable/post_rect"
-        app:layout_constraintTop_toBottomOf="@id/Pay_method"
+        app:layout_constraintTop_toBottomOf="@id/post_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="20dp"
-        android:text="save"
+        android:text="post"
         android:backgroundTint="@color/white"/>
 
 

@@ -1,5 +1,5 @@
 package com.example.socialapp.models
 
-data class Users (val uid : String = "",
+data class user (val uid : String = "",
             val displayName : String? = "",
              val imageUrl : String = "")

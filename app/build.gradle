@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
     implementation 'androidx.compose.foundation:foundation-layout:1.0.0-rc01'
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.2'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     // Glide

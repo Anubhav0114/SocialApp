@@ -62,7 +62,7 @@ class SignInActivity : AppCompatActivity() {
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
-        Toast.makeText(this, " Function  Sign In " , Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, " Function  Sign In " , Toast.LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -78,7 +78,7 @@ class SignInActivity : AppCompatActivity() {
         try {
             val account =
                 completedTask.getResult(ApiException::class.java)!!
-            Toast.makeText(this, " Function Handle Sign In result " , Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, " Function Handle Sign In result " , Toast.LENGTH_LONG).show()
             Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
             firebaseAuthWithGoogle(account.idToken!!)
         } catch (e: ApiException) {

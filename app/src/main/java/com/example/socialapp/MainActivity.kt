@@ -33,9 +33,15 @@ class MainActivity : AppCompatActivity(), IPostAdapter {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(findViewById(R.id.appToolBar))
+
         addButton.setOnClickListener{
            val intent = Intent(this , createPostActivity::class.java)
             startActivityForResult(intent , 123)
+        }
+        profileBtn.setOnClickListener{
+            val intent = Intent(this , ProfileActivity::class.java)
+            startActivity(intent)
         }
         setUpRecyclerView()
     }
@@ -43,24 +49,13 @@ class MainActivity : AppCompatActivity(), IPostAdapter {
     private fun setUpRecyclerView (){
 
         postDao = postDao()
-        /*
+
         val postCollection = postDao.postCollection
         val query = postCollection.orderBy("time", Query.Direction.DESCENDING)
         val recyclerViewOptions = FirestoreRecyclerOptions.Builder<post>().setQuery(query , post ::class.java).build()
         adapter = PostAdapter(recyclerViewOptions , this )
-
-         */
-
-
-        val postCollection = postDao.expenseCollection
-        val query = postCollection.orderBy("time", Query.Direction.DESCENDING)
-        val recyclerViewOptions = FirestoreRecyclerOptions.Builder<expense>().setQuery(query , expense::class.java).build()
-
-        adapter = PostAdapter(recyclerViewOptions , this )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-      //  recyclerView.scrollToPosition(6)
-        Log.i(TAG , "setup Recyclerview  function")
 
     }
 
@@ -95,22 +90,7 @@ class MainActivity : AppCompatActivity(), IPostAdapter {
     }
 
     override fun onShareButtonClicked(postId: String) {
-//        GlobalScope.launch {
-//            postDao.getImageUrl(postId)
-//        }
-
-
-       // Log.i(TAG , "the image bytes are $imgByte")
-
-
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 123 && resultCode == RESULT_OK){
-            recyclerView.scrollToPosition(0)
-            Log.i(TAG , "On Activity Result")
-        }
-    }
 }

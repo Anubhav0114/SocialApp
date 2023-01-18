@@ -1,8 +1,11 @@
 package com.example.socialapp
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.socialapp.daos.postDao
@@ -30,116 +33,94 @@ class createPostActivity : AppCompatActivity() {
         setContentView(view)
 
 
-
-
         val postDao = postDao()
+
+        progressBar = binding.imgProgress
         storageReference = FirebaseStorage.getInstance().reference
-        binding.postButton.setOnClickListener{
-            val mainExp = main_exp.text.toString()
-            val text = post_text.text.toString()
-            val location = Location.text.toString()
-            val payMode = Pay_method.text.toString()
-            currentTime = System.currentTimeMillis()
-            if (mainExp.isEmpty() || text.isEmpty() || location.isEmpty() ||payMode.isEmpty()){
-                Toast.makeText(this, "None field can be blank" , Toast.LENGTH_LONG).show()
+        binding.postButton.setOnClickListener(){
+            val text = post_text.text.toString().trim()
+            if (text.isEmpty() || url.isEmpty()){
+                Toast.makeText(this, "Description/Image can not be Empty" , Toast.LENGTH_LONG).show()
                 return@setOnClickListener
-            }else{
-                postDao.addExpense( mainExp , text , location , currentTime , payMode)
             }
+            else{
+                postDao.addPost(text , url , currentTime)
+                val intent = Intent(this, MainActivity::class.java)
+               startActivity(intent)
+                startActivity(intent)
+                finish()
+            }
+        }
+
+
+        binding.img.setOnClickListener{
+
+            currentTime = System.currentTimeMillis()
+            var imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT)
+            imagePickerIntent.type = "image/*"
+            binding.img.isEnabled = false
+            binding.imgDelete.visibility = View.VISIBLE
+            if (imagePickerIntent.resolveActivity(packageManager) != null){
+                startActivityForResult(imagePickerIntent , PICKED_IMAGE_CODE )
+            }
+        }
+
+        binding.imgDelete.setOnClickListener{
+            //binding.img.setImageResource(R.drawable.ic_baseline_add_a_photo_24)
+            url = ""
+            binding.img.isEnabled = true
+            binding.imgDelete.visibility = View.GONE
         }
 
 
 
 
-//        progressBar = binding.imgProgress
-//        storageReference = FirebaseStorage.getInstance().reference
-//        binding.postButton.setOnClickListener(){
-//            val text = post_text.text.toString().trim()
-//            if (text.isEmpty() || url.isEmpty()){
-//                Toast.makeText(this, "Description/Image can not be Empty" , Toast.LENGTH_LONG).show()
-//                return@setOnClickListener
-//            }
-//            //if (text.isNotEmpty() && url.isNotEmpty())
-//            else{
-//                //url = "xcvcxvxvcxvxc"
-//                postDao.addPost(text , url , currentTime)
-//                //Toast.makeText(this, "$text", Toast.LENGTH_LONG).show()
-//              //  val intent = Intent(this, MainActivity::class.java)
-//               //startActivity(intent)
-//               // startActivity(intent)
-//                finish()
-//            }
-//        }
-//
-//
-//        binding.img.setOnClickListener{
-//
-//            currentTime = System.currentTimeMillis()
-//            var imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT)
-//            imagePickerIntent.type = "image/*"
-//            binding.img.isEnabled = false
-//            binding.imgDelete.visibility = View.VISIBLE
-//            if (imagePickerIntent.resolveActivity(packageManager) != null){
-//                startActivityForResult(imagePickerIntent , PICKED_IMAGE_CODE )
-//            }
-//        }
-//
-//        binding.imgDelete.setOnClickListener{
-//            //binding.img.setImageResource(R.drawable.ic_baseline_add_a_photo_24)
-//            url = ""
-//            binding.img.isEnabled = true
-//            binding.imgDelete.visibility = View.GONE
-//        }
-//
-
-
-
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == PICKED_IMAGE_CODE && resultCode == RESULT_OK){
-//            photoUri = data?.data!!
-//           // binding.img.setImageURI(photoUri)
-//           // var curerTime = System.currentTimeMillis().toString()
-//
-//                var photoReference = storageReference.child("images/$currentTime-photo.jpg")
-//                var uploadTask = photoReference.putFile(photoUri)
-//
-//            progressBar.visibility = View.VISIBLE
-//            binding.postButton.isEnabled = false
-//
-//                var urlTask = uploadTask.continueWithTask{ task ->
-//
-//                    if (!task.isSuccessful) {
-//                        task.exception?.let {
-//                            throw it
-//                        }
-//                        Log.i(TAG, " Exception while url task ", task.exception)
-//                    }
-//                    photoReference.downloadUrl
-//                }.addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        url = task.result.toString()
-//                        progressBar.visibility = View.GONE
-//                        binding.postButton.isEnabled = true
-//                    } else {
-//                        Toast.makeText(
-//                            this,
-//                            "Error while fetching url in urlTask",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                        Log.i(TAG, "Error while fetching url in urlTask")
-//                    }
-//            }
-//
-//
-//        }
-//        else{
-//            Toast.makeText(this,"Image picking action canceled" , Toast.LENGTH_LONG).show()
-//            binding.img.isEnabled = true
-//            binding.imgDelete.visibility = View.GONE
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICKED_IMAGE_CODE && resultCode == RESULT_OK){
+            photoUri = data?.data!!
+            binding.img.setImageURI(photoUri)
+
+                var photoReference = storageReference.child("images/$currentTime-photo.jpg")
+                var uploadTask = photoReference.putFile(photoUri)
+
+            progressBar.visibility = View.VISIBLE
+            binding.postButton.isEnabled = false
+
+                var urlTask = uploadTask.continueWithTask{ task ->
+
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            throw it
+                        }
+                        Log.i(TAG, " Exception while url task ", task.exception)
+                    }
+                    photoReference.downloadUrl
+                }.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        url = task.result.toString()
+                        progressBar.visibility = View.GONE
+                        binding.postButton.isEnabled = true
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Error while fetching url in urlTask",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.i(TAG, "Error while fetching url in urlTask")
+                    }
+            }
+
+
+        }
+        else{
+            Toast.makeText(this,"Image picking action canceled" , Toast.LENGTH_LONG).show()
+            binding.img.isEnabled = true
+            binding.imgDelete.visibility = View.GONE
+        }
+    }
+
 
 }
